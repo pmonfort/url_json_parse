@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>URL Html / Javascript test</title>
+  </head>
+  <body>
+    <h3>Html / Javasctipt test</h3>
+    <label for='url'>Url:<label><input type='textbox' id='url' />
+    <input id='submit' type='submit' />
+    <table id='resultTable' border='1' align='center' >
+    </table>
+    <script>
+      document.getElementById('submit').addEventListener('click', function() {
+        let url = document.getElementById('url').value;
+        if (validURL(url) == null) {
+          alert('Invalid Url');
+        } else {
+          processURL(url);
+        }
+      });
+
+      var validURL = function(url) {
+        let rx = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+        return url.match(rx);
+      }
+
+      var processURL = function(url) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'json';
+        xhr.onerror = function () {
+          alert('There is a problem with the site data');
+        };
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            renderResultTable(xhr.response);
+          } else {
+            alert('There was a problem with the response of the site ' + url);
+          }
+        };
+        xhr.send();
+      };
+
+      var renderResultTable = function(jsonResponse) {
+        let productCategories = jsonResponse['product_categories'];
+        if (productCategories) {
+          let resultTable = document.getElementById('resultTable');
+          let rows = '';
+          insertFullRow(resultTable, Object.keys(productCategories[0]), true)
+          productCategories.forEach(function(row){
+            insertFullRow(resultTable, Object.values(row))
+          });
+        } else {
+          alert('There is a problem with the site data');
+        }
+      }
+
+      var insertFullRow = function(table, tds, header=false) {
+        var baseNode = header ? table.createTHead() : table;
+        var row = baseNode.insertRow();
+        tds.forEach(function(td){
+          let cell = row.insertCell();
+          cell.innerHTML = td
+        });
+      }
+    </script>
+  </body>
+</html>
