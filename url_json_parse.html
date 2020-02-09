@@ -30,13 +30,13 @@
         xhr.open('GET', url, true);
         xhr.responseType = 'json';
         xhr.onerror = function () {
-          alert('There is a problem with the site data');
+          alert('There is a problem with the site response');
         };
         xhr.onload = function() {
           if (xhr.status === 200) {
             renderResultTable(xhr.response);
           } else {
-            alert('There was a problem with the response of the site ' + url);
+            alert('There is a problem with the site response');
           }
         };
         xhr.send();
@@ -52,7 +52,7 @@
             insertFullRow(resultTable, Object.values(row))
           });
         } else {
-          alert('There is a problem with the site data');
+          alert('There is a problem with the site response');
         }
       }
 
