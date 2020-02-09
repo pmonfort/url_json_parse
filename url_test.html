@@ -10,6 +10,8 @@
     </table>
     <script>
       document.getElementById('submit').addEventListener('click', function() {
+        let resultTable = document.getElementById('resultTable');
+        resultTable.innerText = '';
         let url = document.getElementById('url').value;
         if (validURL(url) == null) {
           alert('Invalid Url');
